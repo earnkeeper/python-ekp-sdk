@@ -31,6 +31,14 @@ class CoingeckoService:
 
         url = f"{self.base_url}/coins/{coin_id}/history?date={date_str}"
 
-        result = await self.rest_client.get(url, lambda data, text: data['market_data']['current_price'])
+        result = await self.rest_client.get(url, lambda data, text: data['market_data']['current_price'][fiat_id])
 
-        return result[fiat_id]
+        return result
+
+    async def get_latest_price(self, coin_id, fiat_id):
+
+        url = f"{self.base_url}/simple/price?ids={coin_id}&vs_currencies={fiat_id}"
+
+        result = await self.rest_client.get(url, lambda data, text: data[coin_id][fiat_id])
+
+        return result
