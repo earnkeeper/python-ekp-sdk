@@ -17,7 +17,7 @@ LONG_DESCRIPTION = 'A package that allows to use front-end components to simplif
 setup(
     name="ekp-sdk",
     version=VERSION,
-    url="https://github.com/hiki0505/python-ekp-sdk",
+    url="https://github.com/earnkeeper/python-ekp-sdk",
     author="Earn Keeper (Gavin Shaw)",
     author_email="gavin@earnkeeper.io",
     description=DESCRIPTION,
@@ -27,13 +27,12 @@ setup(
     package_dir={'': 'sdk'},
     packages=find_packages(),
     install_requires=get_list_of_names('requirements.txt'),
-    keywords=['python', 'earnkeeper', 'sdk', 'components'],
+    keywords=['python', 'earnkeeper', 'sdk', 'ekp'],
     classifiers=[
         # "Development Status :: 1 - Planning",
         # "Intended Audience :: Developers",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: 3.9",
         "Operating System :: OS Independent",
         "License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)",
         # "Operating System :: Unix",

@@ -1,8 +1,5 @@
+# https://betterprogramming.pub/how-to-remove-null-none-values-from-a-dictionary-in-python-1bedf1aab5e4
 def cleanNullTerms(d):
-    """
-    Removes dictionary elements that contain
-    null as their values
-    """
     clean = {}
     for k, v in d.items():
         if isinstance(v, dict):
@@ -14,13 +11,27 @@ def cleanNullTerms(d):
     return clean
 
 
-def Span(content, class_name=None):
-    """
+def Paragraphs(children, class_name=None):
+    return {
+        "_type": "Paragraphs",
+        "props": cleanNullTerms({
+            "class_name": class_name,
+            "children": children,
+        })
+    }
 
-    :param content: span element's content
-    :param class_name: class name of span element
-    :return: span element and type as dictionary
-    """
+
+def Fragment(children, class_name=None):
+    return {
+        "_type": "Fragment",
+        "props": cleanNullTerms({
+            "className": class_name,
+            "children": children,
+        })
+    }
+
+
+def Span(content, class_name=None):
     return {
         "_type": "Span",
         "props": cleanNullTerms({
@@ -30,13 +41,32 @@ def Span(content, class_name=None):
     }
 
 
-def Container(children, class_name=None):
-    """
+def Chart(
+        title,
+        type,
+        series,
+        data=None,
+        height=400,
+        busy_when=None,
+        options=None,
+        class_name=None
+):
+    return {
+        "_type": "Chart",
+        "props": cleanNullTerms({
+            "className": class_name,
+            "title": title,
+            "type": type,
+            "height": height,
+            "busyWhen": busy_when,
+            "data": data,
+            "series": series,
+            "options": options,
+        })
+    }
 
-    :param children: child elements of container
-    :param class_name: class name of container element
-    :return: container element and type as dictionary
-    """
+
+def Container(children, class_name=None):
     return {
         "_type": "Container",
         "props": cleanNullTerms({
@@ -47,12 +77,6 @@ def Container(children, class_name=None):
 
 
 def Row(children, class_name=None):
-    """
-
-    :param children: child elements of row
-    :param class_name: class name of row element
-    :return: row element and type as dictionary
-    """
     return {
         "_type": "Row",
         "props": cleanNullTerms({
@@ -74,12 +98,6 @@ def Div(children, class_name=None, style=None):
 
 
 def Col(children, class_name=None):
-    """
-
-    :param children: child elements of column
-    :param class_name: class name of column element
-    :return: column element and type as dictionary
-    """
     return {
         "_type": "Col",
         "props": cleanNullTerms({
@@ -90,13 +108,6 @@ def Col(children, class_name=None):
 
 
 def Icon(name, class_name=None, size=None):
-    """
-
-    :param name: icon name
-    :param class_name: class name of icon element
-    :param size: icon size
-    :return: icon element and type as dictionary
-    """
     return {
         "_type": "Icon",
         "props": cleanNullTerms({
@@ -107,16 +118,21 @@ def Icon(name, class_name=None, size=None):
     }
 
 
-def Datatable(data, columns, class_name=None, busy_when=None, show_export=None):
-    """
-
-    :param data: content of datatable
-    :param columns: columns list of datatable
-    :param class_name: class attribute of datatable
-    :param busy_when: busy attribute of datatable
-    :param show_export: boolean
-    :return: datatable
-    """
+def Datatable(
+    data,
+    columns,
+    class_name=None,
+    busy_when=None,
+    show_export=None,
+    pagination=None,
+    pagination_per_page=None,
+    grid_view=None,
+    disable_list_view=None,
+    default_view=None,
+    filters=None,
+    default_sort_field_id=None,
+    default_sort_asc=None
+):
     return {
         "_type": "Datatable",
         "props": cleanNullTerms({
@@ -124,19 +140,27 @@ def Datatable(data, columns, class_name=None, busy_when=None, show_export=None):
             "className": class_name,
             "columns": columns,
             "data": data,
-            "showExport": show_export
+            "defaultSortAsc": default_sort_asc,
+            "defaultSortFieldId": default_sort_field_id,
+            "defaultView": default_view,
+            "disableListView": disable_list_view,
+            "filters": filters,
+            "gridView": grid_view,
+            "pagination": pagination,
+            "paginationPerPage": pagination_per_page,
+            "showExport": show_export,
         })
     }
 
 
-def Badge(color, children, class_name=None):
-    """
+def Hr():
+    return {
+        "_type": "Hr",
+        "props": {}
+    }
 
-    :param color: badge color
-    :param children: child elements of badge
-    :param class_name: classname element of badge
-    :return: badge element with type as dict
-    """
+
+def Badge(color, children, class_name=None):
     return {
         "_type": "Badge",
         "props": cleanNullTerms({
@@ -147,29 +171,47 @@ def Badge(color, children, class_name=None):
     }
 
 
-def Column(id, value=None, title=None, format=None, right=None, width=None, min_width=None, grow=None, cell=None):
+def Column(
+    id,
+    cell=None,
+    format=None,
+    grow=None,
+    omit=None,
+    min_width=None,
+    right=None,
+    searchable=None,
+    sortable=None,
+    title=None,
+    value=None,
+    width=None,
+):
     return cleanNullTerms({
         "cell": cell,
         "format": format,
         "grow": grow,
         "id": id,
         "minWidth": min_width,
+        "omit": omit,
         "right": right,
+        "searchable": searchable,
+        "sortable": sortable,
         "title": title,
         "value": value,
         "width": width,
     })
 
 
-def Form(name, schema, children, class_name=None):
-    """
+def Card(children=None, class_name=None):
+    return {
+        "_type": "Card",
+        "props": cleanNullTerms({
+            "children": children,
+            "className": class_name
+        })
+    }
 
-    :param name: form name
-    :param schema: form schema
-    :param children: child elements of form
-    :param class_name: form class
-    :return: form element with type as dict
-    """
+
+def Form(name, schema, children, class_name=None):
     return {
         "_type": "Form",
         "props": cleanNullTerms({
@@ -182,15 +224,6 @@ def Form(name, schema, children, class_name=None):
 
 
 def Select(label, name, options, min_width=None, class_name=None):
-    """
-
-    :param label: selector label
-    :param name: selector name
-    :param options: selector options
-    :param min_width: minimum width of selector
-    :param class_name: selector class name
-    :return: selector element with type as dict
-    """
     return {
         "_type": "Select",
         "props": cleanNullTerms({
@@ -204,14 +237,6 @@ def Select(label, name, options, min_width=None, class_name=None):
 
 
 def Button(label, is_submit=None, class_name=None, busyWhen=None):
-    """
-
-    :param label: button label
-    :param is_submit: boolean that describes if button is submit or not
-    :param class_name: button class name
-    :param busyWhen: button busy parameter
-    :return: button element with type as dict
-    """
     return {
         "_type": "Button",
         "props": cleanNullTerms({
@@ -224,39 +249,41 @@ def Button(label, is_submit=None, class_name=None, busyWhen=None):
 
 
 def collection(collectionName):
-    """
-    Returns collection name
-    """
     return collectionName
 
 
 def documents(collectionName):
-    """
-    Returns document of particular collection
-    """
     return f'$["{collection(collectionName)}"].*'
 
 
 def is_busy(collection):
-    """
-    Returns business of collection
-    """
     return f'$..busy[?(@.id=="{collection}")]'
 
 
 def format_currency(rpc, symbol):
-    """
-    Returns dictionary with currency format
-    """
     return {
         "method": "formatCurrency",
         "params": [rpc, symbol]
     }
 
+
+def selected_currency(event):
+    if (event is None):
+        return None
+
+    if ("state" not in event.keys()):
+        return None
+
+    if ("client" not in event["state"].keys()):
+        return None
+
+    if ("selectedCurrency" not in event["state"]["client"].keys()):
+        return None
+
+    return event["state"]["client"]["selectedCurrency"]
+
+
 def form_value(event, form_name, property_name):
-    """
-    Returns form value by form name, if specified, otherwise None
-    """
     if (event is None):
         return None
 
@@ -276,9 +303,6 @@ def form_value(event, form_name, property_name):
 
 
 def format_template(template, values):
-    """
-    Return template formatting
-    """
     return {
         "method": "formatTemplate",
         "params": [template, values]
@@ -293,10 +317,46 @@ def switch_case(on, cases):
 
 
 def commify(value):
-    """
-    Return commify dictionary
-    """
     return {
         "method": "commify",
         "params": [value]
+    }
+
+
+def json_array(values):
+    return {
+        "method": "jsonArray",
+        "params": [values]
+    }
+
+
+def ekp_map(source, projection):
+    return {
+        "method": "map",
+        "params": [source, projection]
+    }
+
+
+def sort_by(source, comparator):
+    return {
+        "method": "sortBy",
+        "params": [source, comparator]
+    }
+
+
+def format_percent(value):
+    return {
+        "method": "formatPercent",
+        "params": [value]
+    }
+
+
+def Image(src, style=None, class_name=None):
+    return {
+        "_type": "Image",
+        "props": cleanNullTerms({
+            "src": src,
+            "style": style,
+            "className": class_name
+        })
     }
