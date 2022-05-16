@@ -1,6 +1,6 @@
 import json
 
-from sdk.services.rest_client import RestClient
+from ekp_sdk.services.rest_client import RestClient
 
 
 class CoingeckoService:

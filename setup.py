@@ -24,7 +24,7 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     py_modules=get_list_of_names('top_level_imports'),
-    package_dir={'': 'sdk'},
+    # package_dir={'': ''},
     packages=find_packages(),
     install_requires=get_list_of_names('requirements.txt'),
     keywords=['python', 'earnkeeper', 'sdk', 'ekp'],

@@ -3,7 +3,7 @@ import time
 
 import aiohttp
 from aioretry import retry
-from sdk.services.retry import default_retry_policy
+from ekp_sdk.services.retry import default_retry_policy
 
 
 class RestClient:

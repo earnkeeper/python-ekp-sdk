@@ -1,6 +1,6 @@
 import json
 
-from sdk.services.redis_client import RedisClient
+from ekp_sdk.services.redis_client import RedisClient
 
 
 class CacheService:
