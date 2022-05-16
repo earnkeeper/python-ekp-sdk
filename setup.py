@@ -1,13 +1,14 @@
 from setuptools import setup, find_packages
 import codecs
 import os
+from setup_utils import get_list_of_names
 
 # here = os.path.abspath(os.path.dirname(__file__))
 #
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
-VERSION = '0.0.1'
+VERSION = '0.0.2'
 DESCRIPTION = 'Python SDK for frontend components usage'
 LONG_DESCRIPTION = 'A package that allows to use front-end components to simplify ' \
                    'building of web pages for ekp plugins'
@@ -22,10 +23,10 @@ setup(
     description=DESCRIPTION,
     long_description=long_description,
     long_description_content_type='text/markdown',
-    py_modules=["components", "currency_utils", "socket_methods"],
+    py_modules=get_list_of_names('top_level_imports'),
     package_dir={'': 'sdk'},
     packages=find_packages(),
-    install_requires=['eventlet==0.33.0', 'pycoingecko==2.2.0', 'python-socketio==5.6.0'],
+    install_requires=get_list_of_names('requirements.txt'),
     keywords=['python', 'earnkeeper', 'sdk', 'components'],
     classifiers=[
         # "Development Status :: 1 - Planning",
