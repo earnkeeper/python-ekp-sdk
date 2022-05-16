@@ -1,0 +1,33 @@
+name: Twine Upload
+on:
+  push:
+    branches:
+      - main
+      - staging
+
+jobs:
+  upload:
+    name: Twine Upload
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-python@v3
+        with:
+          python-version: '3.8'
+      
+      - run: pip install twine
+      
+      - run: python setup.py sdist
+      
+      - name: Staging Upload
+        if: ${{ github.ref == 'refs/heads/staging' }}
+        run: twine upload -r testpypi -u=__token__ -p=$PYPI_TOKEN dist/*
+        env:
+          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+
+      - name: Production Upload
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: twine upload -u=__token__ -p=$PYPI_TOKEN dist/*
+        env:
+          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
