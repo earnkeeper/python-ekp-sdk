@@ -22,12 +22,12 @@ jobs:
       
       - name: Staging Upload
         if: ${{ github.ref == 'refs/heads/staging' }}
-        run: twine upload -r testpypi -u=__token__ -p=$PYPI_TOKEN dist/*
+        run: twine upload -r testpypi -u=__token__ -p=$PYPI_TEST_TOKEN dist/*
         env:
-          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+          PYPI_TEST_TOKEN: ${{ secrets.PYPI_TEST_TOKEN }}
 
       - name: Production Upload
         if: ${{ github.ref == 'refs/heads/main' }}
         run: twine upload -u=__token__ -p=$PYPI_TOKEN dist/*
         env:
-          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
