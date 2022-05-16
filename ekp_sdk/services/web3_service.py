@@ -12,10 +12,14 @@ class Web3Service:
 
     def decode_input(self, abi, input):
 
-        contract = self.w3.eth.contract(abi=abi)
-        func_obj, func_params = contract.decode_function_input(input)
+        try:
+            contract = self.w3.eth.contract(abi=abi)
+            func_obj, func_params = contract.decode_function_input(input)
 
-        return func_params
+            return func_params
+        except BaseException as err:
+            print(f"🚨 Failed to decode input due to: {err=}, {type(err)=}")
+            return None
 
     async def get_currency_decimals(self, address):
         start = time.perf_counter()
