@@ -89,17 +89,18 @@ def Icon(name, class_name=None, size=None):
 def Datatable(
     data,
     columns,
-    class_name=None,
     busy_when=None,
-    show_export=None,
+    class_name=None,
+    default_sort_asc=None,
+    default_sort_field_id=None,
+    default_view=None,
+    disable_list_view=None,
+    filters=None,
+    grid_view=None,
+    on_row_clicked=None,
     pagination=None,
     pagination_per_page=None,
-    grid_view=None,
-    disable_list_view=None,
-    default_view=None,
-    filters=None,
-    default_sort_field_id=None,
-    default_sort_asc=None
+    show_export=None,
 ):
     return {
         "_type": "Datatable",
@@ -114,6 +115,7 @@ def Datatable(
             "disableListView": disable_list_view,
             "filters": filters,
             "gridView": grid_view,
+            "onRowClicked": on_row_clicked,
             "pagination": pagination,
             "paginationPerPage": pagination_per_page,
             "showExport": show_export,
@@ -233,42 +235,6 @@ def format_currency(rpc, symbol):
         "method": "formatCurrency",
         "params": [rpc, symbol]
     }
-
-
-def selected_currency(event):
-    if (event is None):
-        return None
-
-    if ("state" not in event.keys()):
-        return None
-
-    if ("client" not in event["state"].keys()):
-        return None
-
-    if ("selectedCurrency" not in event["state"]["client"].keys()):
-        return None
-
-    return event["state"]["client"]["selectedCurrency"]
-
-
-def form_value(event, form_name, property_name):
-    if (event is None):
-        return None
-
-    if ("state" not in event.keys()):
-        return None
-
-    if ("forms" not in event["state"].keys()):
-        return None
-
-    if (form_name not in event["state"]["forms"].keys()):
-        return None
-
-    if (property_name not in event["state"]["forms"][form_name].keys()):
-        return None
-
-    return event["state"]["forms"][form_name][property_name]
-
 
 def format_template(template, values):
     return {
