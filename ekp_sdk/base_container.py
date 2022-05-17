@@ -1,4 +1,4 @@
-from decouple import config
+from ekp_sdk.db.mg_client import MgClient
 
 from ekp_sdk.db.pg_client import PgClient
 from ekp_sdk.services.cache_service import CacheService
@@ -9,16 +9,20 @@ from ekp_sdk.services.redis_client import RedisClient
 from ekp_sdk.services.rest_client import RestClient
 from ekp_sdk.services.web3_service import Web3Service
 
-class BaseContainer:
-    def __init__(self):
 
-        POSTGRES_URI = config("POSTGRES_URI", default=None)
+
+class BaseContainer:
+    def __init__(self, config):
+
+        EK_PLUGIN_ID = config("EK_PLUGIN_ID", default=None)
         ETHERSCAN_API_KEY = config("ETHERSCAN_API_KEY", default=None)
         ETHERSCAN_BASE_URL = config("ETHERSCAN_BASE_URL", default=None)
-        REDIS_URI = config("REDIS_URI", default="redis://localhost")
+        MONGO_DB_NAME = config('MONGO_DB_NAME', default=None)
+        MONGO_URI = config('MONGO_URI', default=None)
         PORT = config("PORT", default=3001, cast=int)
+        POSTGRES_URI = config("POSTGRES_URI", default=None)
+        REDIS_URI = config("REDIS_URI", default="redis://localhost")
         WEB3_PROVIDER_URL = config("WEB3_PROVIDER_URL", default=None)
-        EK_PLUGIN_ID = config("EK_PLUGIN_ID", default=None)
 
         self.redis_client = RedisClient(
             uri=REDIS_URI
@@ -33,6 +37,14 @@ class BaseContainer:
         else:
             print("⚠️ skipped PgClient init, missing POSTGRES_URI")
 
+        if MONGO_URI is not None:
+            self.mg_client = MgClient(
+                uri=MONGO_URI,
+                db_name=MONGO_DB_NAME
+            )
+        else:
+            print("⚠️ skipped MgClient init, missing MONGO_URI")
+            
         self.coingecko_service = CoingeckoService(
             rest_client=self.rest_client
         )

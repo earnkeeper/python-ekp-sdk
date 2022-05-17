@@ -32,8 +32,8 @@ class EtherscanService:
 
         def fn(data, text):
             trans = data["result"]
-
-            if (trans is None):
+            
+            if (trans is None or not isinstance(trans, list)):
                 print(f"🚨 {text}")
                 raise Exception("Received None data from url")
 
