@@ -233,6 +233,11 @@ def format_currency(rpc, symbol):
         "params": [rpc, symbol]
     }
 
+def format_age(value):
+    return {
+        "method": "formatAge",
+        "params": [value]
+    }
 
 def format_template(template, values):
     return {

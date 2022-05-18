@@ -13,7 +13,7 @@ def Link(
     return {
         "_type": "Link",
         "props": clean_null_terms({
-            "class_name": class_name,
+            "className": class_name,
             "content": content,
             "external": external,
             "externalIcon": externalIcon,
