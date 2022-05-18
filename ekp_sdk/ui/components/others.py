@@ -1,5 +1,3 @@
-
-
 from ekp_sdk.util.clean_null_terms import clean_null_terms
 
 
@@ -31,7 +29,6 @@ def Span(content, class_name=None):
             "content": content,
         })
     }
-
 
 
 def Container(children, class_name=None):
@@ -236,6 +233,7 @@ def format_currency(rpc, symbol):
         "params": [rpc, symbol]
     }
 
+
 def format_template(template, values):
     return {
         "method": "formatTemplate",
@@ -248,7 +246,6 @@ def switch_case(on, cases):
         "method": "switchCase",
         "params": [on, cases]
     }
-
 
 
 def json_array(values):
