@@ -21,14 +21,17 @@ class BaseContainer:
         MONGO_URI = config('MONGO_URI', default=None)
         PORT = config("PORT", default=3001, cast=int)
         POSTGRES_URI = config("POSTGRES_URI", default=None)
-        REDIS_URI = config("REDIS_URI", default="redis://localhost")
+        REDIS_URI = config("REDIS_URI", default=None)
         WEB3_PROVIDER_URL = config("WEB3_PROVIDER_URL", default=None)
 
-        self.redis_client = RedisClient(
-            uri=REDIS_URI
-        )
-
         self.rest_client = RestClient()
+
+        if REDIS_URI is not None:
+            self.redis_client = RedisClient(
+                uri=REDIS_URI
+            )
+        else:
+            print("⚠️ skipped RedisClient init, missing REDIS_URI")
 
         if POSTGRES_URI is not None:
             self.pg_client = PgClient(
@@ -44,10 +47,6 @@ class BaseContainer:
             )
         else:
             print("⚠️ skipped MgClient init, missing MONGO_URI")
-            
-        self.coingecko_service = CoingeckoService(
-            rest_client=self.rest_client
-        )
 
         if ETHERSCAN_API_KEY is not None and ETHERSCAN_BASE_URL is not None:
             self.etherscan_service = EtherscanService(
@@ -59,9 +58,12 @@ class BaseContainer:
             print(
                 "⚠️ skipped EtherscanService init, missing ETHERSCAN_API_KEY and ETHERSCAN_BASE_URL")
 
-        self.cache_service = CacheService(
-            redis_client=self.redis_client,
-        )
+        if self.redis_client is not None:
+            self.cache_service = CacheService(
+                redis_client=self.redis_client,
+            )
+        else:
+            print("⚠️ skipped CacheService init, missing RedisClient")
 
         if WEB3_PROVIDER_URL is not None:
             self.web3_service = Web3Service(
@@ -77,3 +79,8 @@ class BaseContainer:
             )
         else:
             print("⚠️ skipped ClientService init, missing EK_PLUGIN_ID")
+
+        self.coingecko_service = CoingeckoService(
+            rest_client=self.rest_client
+        )
+
