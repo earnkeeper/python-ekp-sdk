@@ -5,7 +5,7 @@ def Link(
         class_name=None,
         content=None,
         external=None,
-        externalIcon=None,
+        external_icon=None,
         href=None,
         style=None,
         tooltip=None
@@ -16,7 +16,7 @@ def Link(
             "className": class_name,
             "content": content,
             "external": external,
-            "externalIcon": externalIcon,
+            "externalIcon": external_icon,
             "href": href,
             "style": style,
             "tooltip": tooltip,

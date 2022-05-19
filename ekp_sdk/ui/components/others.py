@@ -62,12 +62,12 @@ def Div(children, class_name=None, style=None):
     }
 
 
-def Col(children, class_name=None):
+def Col(class_name=None, children=None):
     return {
         "_type": "Col",
         "props": clean_null_terms({
             "className": class_name,
-            "children": children
+            "children": children or []
         })
     }
 
@@ -97,6 +97,7 @@ def Datatable(
     on_row_clicked=None,
     pagination=None,
     pagination_per_page=None,
+    search_hint=None,
     show_export=None,
 ):
     return {
@@ -115,6 +116,7 @@ def Datatable(
             "onRowClicked": on_row_clicked,
             "pagination": pagination,
             "paginationPerPage": pagination_per_page,
+            "searchHint": search_hint,
             "showExport": show_export,
         })
     }
