@@ -1,7 +1,9 @@
 import time
-from decouple import config
-from web3.auto import Web3, w3
 
+from web3.auto import Web3, w3
+from web3.middleware import geth_poa_middleware
+from aioretry import retry
+from ekp_sdk.util.retry import default_retry_policy
 
 class Web3Service:
     def __init__(self, provider_url):
@@ -9,7 +11,9 @@ class Web3Service:
             self.w3 = w3
         else:
             self.w3 = Web3(Web3.HTTPProvider(provider_url))
-
+            self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)    
+        
+        
     def decode_input(self, abi, input):
 
         try:
@@ -20,6 +24,17 @@ class Web3Service:
         except BaseException as err:
             print(f"🚨 Failed to decode input due to: {err=}, {type(err)=}")
             return None
+
+    def get_filter(self, filter_params):
+        return self.w3.eth.filter(filter_params)
+
+    @retry(default_retry_policy)
+    async def get_transaction(self, hash):
+        return self.w3.eth.get_transaction(hash)
+
+    @retry(default_retry_policy)
+    async def get_block(self, block_number):
+        return self.w3.eth.get_block(block_number)
 
     async def get_currency_decimals(self, address):
         start = time.perf_counter()
@@ -70,12 +85,12 @@ class Web3Service:
             print(f'🐛 contract("{address}").name.call()')
 
             result = contract.functions.name().call()
-            
-            print(f"⏱  [web3_service.get_token_name] {time.perf_counter() - start:0.3f}s")
-            
+
+            print(
+                f"⏱  [web3_service.get_token_name] {time.perf_counter() - start:0.3f}s")
+
             return result
         except:
-            print(f"🚨 [web3_service.get_token_name] {time.perf_counter() - start:0.3f}s")
+            print(
+                f"🚨 [web3_service.get_token_name] {time.perf_counter() - start:0.3f}s")
             return None
-
-
