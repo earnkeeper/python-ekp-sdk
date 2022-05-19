@@ -31,12 +31,13 @@ def Span(content, class_name=None):
     }
 
 
-def Container(children, class_name=None):
+def Container(children, class_name=None, context=None):
     return {
         "_type": "Container",
         "props": clean_null_terms({
             "className": class_name,
-            "children": children
+            "children": children,
+            "context": context
         })
     }
 
@@ -51,12 +52,12 @@ def Row(children, class_name=None):
     }
 
 
-def Div(children, class_name=None, style=None):
+def Div(children=None, class_name=None, style=None):
     return {
         "_type": "Div",
         "props": clean_null_terms({
             "className": class_name,
-            "children": children,
+            "children": children or [],
             "style": style,
         })
     }
