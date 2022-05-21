@@ -50,6 +50,7 @@ class TransactionSyncService:
                 tran["cumulativeGasUsed"] = int(tran["cumulativeGasUsed"])
                 tran["gas"] = int(tran["gas"])
                 tran["gasUsed"] = int(tran["gasUsed"])
+                tran["gasPrice"] = int(tran["gasPrice"])
                 tran["isError"] = tran["isError"] == "1"
                 tran["timeStamp"] = int(tran["timeStamp"])
                 tran["transactionIndex"] = int(tran["transactionIndex"])
@@ -71,7 +72,7 @@ class TransactionSyncService:
             if (len(trans) < self.page_size):
                 break
 
-    async def sync_logs(self, log_address, start_block_number):
+    async def sync_logs(self, log_address, start_block_number=0):
         latest_block_number = await self.etherscan_service.get_latest_block_number()
 
         latest_log = self.contract_logs_repo.get_latest(
