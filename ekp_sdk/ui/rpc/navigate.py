@@ -1,5 +1,3 @@
-from decouple import config
-
 def navigate(
     location,
     new_tab=False,
@@ -7,5 +5,5 @@ def navigate(
 ):
     return {
         "method": "navigate",
-        "params": [location, new_tab, external, config("EK_PLUGIN_ID")]
+        "params": [location, new_tab, external]
     }

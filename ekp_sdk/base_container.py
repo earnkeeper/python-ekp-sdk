@@ -58,12 +58,12 @@ class BaseContainer:
             print(
                 "⚠️ skipped EtherscanService init, missing ETHERSCAN_API_KEY and ETHERSCAN_BASE_URL")
 
-        if self.redis_client is not None:
+        if REDIS_URI is not None:
             self.cache_service = CacheService(
                 redis_client=self.redis_client,
             )
         else:
-            print("⚠️ skipped CacheService init, missing RedisClient")
+            print("⚠️ skipped CacheService init, missing REDIS_URI")
 
         if WEB3_PROVIDER_URL is not None:
             self.web3_service = Web3Service(

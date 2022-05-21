@@ -1,5 +1,6 @@
+from ekp_sdk.services.limiter import Limiter
 from ekp_sdk.services.rest_client import RestClient
-from aiolimiter import AsyncLimiter
+from ast import literal_eval
 
 class EtherscanService:
     def __init__(
@@ -11,8 +12,14 @@ class EtherscanService:
         self.api_key = api_key
         self.base_url = base_url
         self.rest_client = rest_client
-        self.limiter = AsyncLimiter(5, time_period=1)
+        self.limiter = Limiter(250, 10)
 
+    async def get_latest_block_number(self):
+        url = f"{self.base_url}?module=proxy&action=eth_blockNumber&apikey={self.api_key}"
+        result = await self.rest_client.get(url, lambda data, text: literal_eval(data["result"]), self.limiter)
+
+        return result
+    
     async def get_contract_name(self, address):
         url = f"{self.base_url}?module=contract&action=getsourcecode&address={address}&apikey={self.api_key}"
 
@@ -21,8 +28,6 @@ class EtherscanService:
         return result
 
     async def get_abi(self, address):
-        await self.limiter.acquire()
-                
         url = f"{self.base_url}?module=contract&action=getabi&address={address}&apikey={self.api_key}"
 
         result = await self.rest_client.get(url, lambda data, text: data["result"], self.limiter)
