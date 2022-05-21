@@ -90,8 +90,6 @@ class TransactionSyncService:
             if len(logs) == 0:
                 break
 
-            print(f"Retrieved {len(logs)} logs from the api, saving to db...")
-
             models = []
 
             for log in logs:
