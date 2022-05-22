@@ -72,7 +72,7 @@ class ClientService:
         }
         await self.sio.emit('remove-layers', json.dumps(message), room=sid)
 
-    async def emit_menu(self, sid, icon, title, nav_link):
+    async def emit_menu(self, sid, icon, title, nav_link, aliases=None, short_link=None):
         """
         Sends menu layer from server to the client side
         """
@@ -86,6 +86,8 @@ class ClientService:
                     "icon": icon,
                     "title": title,
                     "navLink": nav_link,
+                    "aliases": aliases,
+                    "shortLink": short_link
                 }
             ],
             "timestamp": int(time.time())
