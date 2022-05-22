@@ -7,3 +7,4 @@ from ekp_sdk.services.redis_client import RedisClient
 from ekp_sdk.services.rest_client import RestClient
 from ekp_sdk.services.transaction_sync_service import TransactionSyncService
 from ekp_sdk.services.web3_service import Web3Service
+from ekp_sdk.services.base_mapper_service import BaseMapperService
