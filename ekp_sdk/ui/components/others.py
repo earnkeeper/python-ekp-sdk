@@ -227,7 +227,7 @@ def documents(collectionName):
 
 
 def is_busy(collection):
-    return f'$..busy[?(@.id=="{collection}")]'
+    return f'$.busy[?(@.id=="{collection}")]'
 
 
 def format_currency(rpc, symbol):

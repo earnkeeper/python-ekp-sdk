@@ -3,14 +3,15 @@ from ekp_sdk.util.clean_null_terms import clean_null_terms
 
 def Chart(
         type,
-        series,
-        title=None,
+        busy_when=None,
         card=None,
+        class_name=None,
         data=None,
         height=400,
-        busy_when=None,
         options=None,
-        class_name=None
+        series=None,
+        style=None,
+        title=None,
 ):
     return {
         "_type": "Chart",
@@ -22,6 +23,7 @@ def Chart(
             "height": height,
             "options": options,
             "series": series,
+            "style": style,
             "title": title,
             "type": type,
         })
