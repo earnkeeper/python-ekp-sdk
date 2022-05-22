@@ -54,6 +54,8 @@ class TransactionSyncService:
                 tran["isError"] = tran["isError"] == "1"
                 tran["timeStamp"] = int(tran["timeStamp"])
                 tran["transactionIndex"] = int(tran["transactionIndex"])
+                if len(tran["input"]) >= 10:
+                    tran["methodId"] = tran["input"][0:10]
 
                 models.append(tran)
 
