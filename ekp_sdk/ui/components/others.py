@@ -181,8 +181,6 @@ def Card(children=None, class_name=None):
     }
 
 
-
-
 def Select(label, name, options, min_width=None, class_name=None):
     return {
         "_type": "Select",
@@ -196,14 +194,29 @@ def Select(label, name, options, min_width=None, class_name=None):
     }
 
 
-def Button(label, is_submit=None, class_name=None, busyWhen=None):
+def Button(
+    busy_when=None,
+    class_name=None,
+    color=None,
+    icon=None,
+    is_submit=None,
+    label=None,
+    on_click=None,
+    size=None,
+    tooltip=None
+):
     return {
         "_type": "Button",
         "props": clean_null_terms({
+            "busyWhen": busy_when,
             "className": class_name,
-            "label": label,
+            "color": color,
+            "icon": icon,
             "isSubmit": is_submit,
-            "busyWhen": busyWhen,
+            "label": label,
+            "onClick": on_click,
+            "size": size,
+            "tooltip": tooltip,
         })
     }
 
@@ -226,17 +239,20 @@ def format_currency(rpc, symbol):
         "params": [rpc, symbol]
     }
 
+
 def format_age(value):
     return {
         "method": "formatAge",
         "params": [value]
     }
 
+
 def format_datetime(value):
     return {
         "method": "formatDatetime",
         "params": [value]
     }
+
 
 def format_template(template, values):
     return {
@@ -289,6 +305,7 @@ def Image(src, style=None, class_name=None):
             "className": class_name
         })
     }
+
 
 def Avatar(icon, size=None, color=None):
     return {

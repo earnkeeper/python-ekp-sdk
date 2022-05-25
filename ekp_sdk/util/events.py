@@ -46,3 +46,18 @@ def form_value(event, form_name, property_name):
 
     return event["state"]["forms"][form_name][property_name]
 
+def form_values(event, form_name):
+    if (event is None):
+        return None
+
+    if ("state" not in event.keys()):
+        return None
+
+    if ("forms" not in event["state"].keys()):
+        return None
+
+    if (form_name not in event["state"]["forms"].keys()):
+        return None
+
+    return event["state"]["forms"][form_name]
+
