@@ -181,16 +181,6 @@ def Card(children=None, class_name=None):
     }
 
 
-def Form(name, schema, children, class_name=None):
-    return {
-        "_type": "Form",
-        "props": clean_null_terms({
-            "children": children,
-            "className": class_name,
-            "name": name,
-            "schema": schema,
-        })
-    }
 
 
 def Select(label, name, options, min_width=None, class_name=None):
