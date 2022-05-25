@@ -232,6 +232,12 @@ def format_age(value):
         "params": [value]
     }
 
+def format_datetime(value):
+    return {
+        "method": "formatDatetime",
+        "params": [value]
+    }
+
 def format_template(template, values):
     return {
         "method": "formatTemplate",
@@ -281,5 +287,15 @@ def Image(src, style=None, class_name=None):
             "src": src,
             "style": style,
             "className": class_name
+        })
+    }
+
+def Avatar(icon, size=None, color=None):
+    return {
+        "_type": "Avatar",
+        "props": clean_null_terms({
+            "color": color,
+            "icon": icon,
+            "size": size
         })
     }
