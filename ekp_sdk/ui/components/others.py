@@ -21,12 +21,13 @@ def Fragment(children, class_name=None):
     }
 
 
-def Span(content, class_name=None):
+def Span(content, class_name=None, when=None):
     return {
         "_type": "Span",
         "props": clean_null_terms({
             "className": class_name,
             "content": content,
+            "when": when
         })
     }
 
@@ -52,13 +53,14 @@ def Row(children, class_name=None):
     }
 
 
-def Div(children=None, class_name=None, style=None):
+def Div(children=None, class_name=None, style=None, when=None):
     return {
         "_type": "Div",
         "props": clean_null_terms({
             "className": class_name,
             "children": children or [],
             "style": style,
+            "when": when
         })
     }
 

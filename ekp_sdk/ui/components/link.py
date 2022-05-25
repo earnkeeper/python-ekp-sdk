@@ -8,7 +8,8 @@ def Link(
         external_icon=None,
         href=None,
         style=None,
-        tooltip=None
+        tooltip=None,
+        when=None
 ):
     return {
         "_type": "Link",
@@ -20,5 +21,6 @@ def Link(
             "href": href,
             "style": style,
             "tooltip": tooltip,
+            "when": when
         })
     }
