@@ -49,7 +49,7 @@ class BaseContainer:
         else:
             print("⚠️ skipped MgClient init, missing MONGO_URI")
 
-        if ETHERSCAN_API_KEY is not None and ETHERSCAN_BASE_URL is not None:
+        if ETHERSCAN_API_KEY is not None and ETHERSCAN_BASE_URL is not None and MONGO_URI is not None:
             self.etherscan_service = EtherscanService(
                 api_key=ETHERSCAN_API_KEY,
                 base_url=ETHERSCAN_BASE_URL,
