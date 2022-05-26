@@ -49,24 +49,27 @@ class BaseContainer:
         else:
             print("⚠️ skipped MgClient init, missing MONGO_URI")
 
-        if ETHERSCAN_API_KEY is not None and ETHERSCAN_BASE_URL is not None and MONGO_URI is not None:
+        if ETHERSCAN_API_KEY is not None and ETHERSCAN_BASE_URL is not None:
             self.etherscan_service = EtherscanService(
                 api_key=ETHERSCAN_API_KEY,
                 base_url=ETHERSCAN_BASE_URL,
                 rest_client=self.rest_client
             )
-            self.contract_transactions_repo = ContractTransactionsRepo(
-                mg_client=self.mg_client,
-            )
+            
+            if MONGO_URI is not None:
+                self.contract_transactions_repo = ContractTransactionsRepo(
+                    mg_client=self.mg_client,
+                )
 
-            self.contract_logs_repo = ContractLogsRepo(
-                mg_client=self.mg_client,
-            )
-            self.transaction_sync_service = TransactionSyncService(
-                contract_transactions_repo=self.contract_transactions_repo,
-                contract_logs_repo=self.contract_logs_repo,
-                etherscan_service=self.etherscan_service,
-            )
+                self.contract_logs_repo = ContractLogsRepo(
+                    mg_client=self.mg_client,
+                )
+                
+                self.transaction_sync_service = TransactionSyncService(
+                    contract_transactions_repo=self.contract_transactions_repo,
+                    contract_logs_repo=self.contract_logs_repo,
+                    etherscan_service=self.etherscan_service,
+                )
         else:
             print(
                 "⚠️ skipped EtherscanService init, missing ETHERSCAN_API_KEY and ETHERSCAN_BASE_URL")
