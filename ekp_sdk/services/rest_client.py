@@ -14,7 +14,8 @@ class RestClient:
         self,
         url,
         fn=lambda data, text: data,
-        limiter: Limiter = None
+        limiter: Limiter = None,
+        headers=None
     ):
         if limiter is not None:
             await limiter.acquire()
@@ -23,7 +24,10 @@ class RestClient:
             async with aiohttp.ClientSession() as session:
                 print(f"🐛 GET {url}")
                 start = time.perf_counter()
-                response = await session.get(url=url)
+                if headers is None:
+                    response = await session.get(url=url)
+                else:
+                    response = await session.get(url=url, headers=headers)
 
                 if (response.status != 200):
                     raise Exception(f"Response code: {response.status}")

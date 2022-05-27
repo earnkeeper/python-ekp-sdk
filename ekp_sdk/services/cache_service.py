@@ -31,6 +31,6 @@ class CacheService:
 
         value = await fn()
 
-        await self.set(key, value)
+        await self.set(key, value, ex=ex)
 
         return value
