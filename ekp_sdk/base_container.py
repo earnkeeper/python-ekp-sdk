@@ -6,6 +6,7 @@ from ekp_sdk.services.cache_service import CacheService
 from ekp_sdk.services.client_service import ClientService
 from ekp_sdk.services.coingecko_service import CoingeckoService
 from ekp_sdk.services.etherscan_service import EtherscanService
+from ekp_sdk.services.google_sheets_client import GoogleSheetsClient
 from ekp_sdk.services.moralis_api_service import MoralisApiService
 from ekp_sdk.services.redis_client import RedisClient
 from ekp_sdk.services.rest_client import RestClient
@@ -149,4 +150,15 @@ class BaseContainer:
         else:
             logging.warn("⚠️ skipped ClientService init, missing EK_PLUGIN_ID")
 
+        # -----------------------------------------------------------------
+
+        GOOGLE_SHEETS_CREDENTIALS_FILE = config("GOOGLE_SHEETS_CREDENTIALS_FILE", default=None)
+
+        if GOOGLE_SHEETS_CREDENTIALS_FILE is not None:
+            self.google_sheets_client = GoogleSheetsClient(
+                credentials_file=GOOGLE_SHEETS_CREDENTIALS_FILE
+            )
+        else:
+            logging.warn("⚠️ skipped GoogleSheetsClient init, missing GOOGLE_SHEETS_CREDENTIALS_FILE")
+            
         # -----------------------------------------------------------------
