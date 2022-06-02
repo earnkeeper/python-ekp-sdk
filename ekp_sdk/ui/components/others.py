@@ -53,14 +53,15 @@ def Row(children, class_name=None):
     }
 
 
-def Div(children=None, class_name=None, style=None, when=None):
+def Div(children=None, class_name=None, style=None, when=None, context=None):
     return {
         "_type": "Div",
         "props": clean_null_terms({
             "className": class_name,
             "children": children or [],
             "style": style,
-            "when": when
+            "when": when,
+            "context": context
         })
     }
 
