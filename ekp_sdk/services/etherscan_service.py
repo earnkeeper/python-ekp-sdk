@@ -20,6 +20,13 @@ class EtherscanService:
 
         return result
     
+    async def get_block_number_by_timestamp(self, timestamp):
+        url = f"{self.base_url}?module=block&action=getblocknobytime&closest=before&timestamp={timestamp}&apikey={self.api_key}"
+        
+        result = await self.rest_client.get(url, lambda data, text: int(data["result"]), self.limiter)
+
+        return result    
+    
     async def get_contract_name(self, address):
         url = f"{self.base_url}?module=contract&action=getsourcecode&address={address}&apikey={self.api_key}"
 
