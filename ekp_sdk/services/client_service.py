@@ -118,10 +118,13 @@ class ClientService:
 
         await self.emit_add_layers(sid, [layer])
 
-    async def emit_documents(self, sid, collection_name, documents):
+    async def emit_documents(self, sid, collection_name, documents, layer_id=None):
 
+        if layer_id == None:
+            layer_id = f"{self.plugin_id}_{collection_name}"
+            
         layer = {
-            "id": f"{self.plugin_id}_{collection_name}",
+            "id": layer_id,
             "collectionName": collection_name,
             "set": documents,
             "timestamp": int(time.time())
