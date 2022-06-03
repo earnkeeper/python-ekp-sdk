@@ -1,4 +1,5 @@
 import json
+import logging
 import time
 
 import aiohttp_cors
@@ -21,13 +22,13 @@ class ClientService:
 
         @sio.event
         async def connect(sid, environ, auth):
-            print(f"✨ Client connected: {sid} => {len(self.controllers)} controllers")
+            logging.info(f"✨ Client connected: {sid} => {len(self.controllers)} controllers")
             for controller in self.controllers:
                 await controller.on_connect(sid)
 
         @sio.on('client-state-changed')
         async def on_client_state_changed(sid, data):
-            print(f"📣 Client state changed: {sid} => {len(self.controllers)} controllers")
+            logging.info(f"📣 Client state changed: {sid} => {len(self.controllers)} controllers")
             for controller in self.controllers:
                 await controller.on_client_state_changed(sid, json.loads(data))
 
@@ -56,6 +57,8 @@ class ClientService:
         self.controllers.append(controller)
 
     async def emit_busy(self, sid, collection_name):
+        logging.info(f"📣 Emit busy: {collection_name} => {sid}")
+        
         layer = {
             "id": f"busy-{collection_name}",
             "collectionName": "busy",
@@ -65,6 +68,8 @@ class ClientService:
         await self.emit_add_layers(sid, [layer])
 
     async def emit_done(self, sid, collection_name):
+        logging.info(f"📣 Emit done: {collection_name} => {sid}")
+        
         message = {
             "query": {
                 "id": f'busy-{collection_name}',
@@ -76,16 +81,18 @@ class ClientService:
         """
         Sends menu layer from server to the client side
         """
-
+        
         if not id:
             id = f"{self.plugin_id}_{nav_link}"
+
+        logging.info(f"📣 Emit menu: {id} => {sid}")
             
         layer = {
             "id": id,
             "collectionName": "menus",
             "set": [
                 {
-                    "id": f"{self.plugin_id}_{nav_link}",
+                    "id": id,
                     "icon": icon,
                     "title": title,
                     "navLink": nav_link,
@@ -104,6 +111,8 @@ class ClientService:
         Sends main page content from server to the client side
         """
 
+        logging.info(f"📣 Emit menu: {path} => {sid}")
+
         layer = {
             "id": f"{self.plugin_id}_page_{path}",
             "collectionName": "pages",
@@ -120,6 +129,8 @@ class ClientService:
 
     async def emit_documents(self, sid, collection_name, documents, layer_id=None):
 
+        logging.info(f"📣 Emit documents: {collection_name}({len(documents)}) => {sid}")
+        
         if layer_id == None:
             layer_id = f"{self.plugin_id}_{collection_name}"
             
