@@ -15,7 +15,8 @@ class RestClient:
         url,
         fn=lambda data, text: data,
         limiter: Limiter = None,
-        headers=None
+        headers=None,
+        allowed_response_codes = [200]
     ):
         if limiter is not None:
             await limiter.acquire()
@@ -29,7 +30,7 @@ class RestClient:
                 else:
                     response = await session.get(url=url, headers=headers)
 
-                if (response.status != 200):
+                if (response.status not in allowed_response_codes):
                     raise Exception(f"Response code: {response.status}")
 
                 text = await response.read()

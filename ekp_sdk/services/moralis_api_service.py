@@ -28,8 +28,18 @@ class MoralisApiService:
 
         if to_block_number:
             url += f"&to_block={to_block_number}"
-
-        result = await self.__get(url, fn=lambda data,text: 1 / data["usdPrice"] if "usdPrice" in data else None)
+        
+        def handle_response(data, text):
+            if "usdPrice" in data:
+                return data["usdPrice"]
+            
+            return 0
+            
+        result = await self.__get(
+            url, 
+            handle_response, 
+            allowed_response_codes = [200, 400]
+        )
 
         return result
     
@@ -63,7 +73,7 @@ class MoralisApiService:
 
     # -----------------------------------------------------------------
 
-    async def __get(self, url, fn=lambda data, text: data["result"]):
+    async def __get(self, url, fn=lambda data, text: data["result"], allowed_response_codes = [200]):
         headers = {"X-API-Key": self.api_key}
 
         result = await self.rest_client.get(
@@ -71,6 +81,7 @@ class MoralisApiService:
             fn,
             limiter=self.limiter,
             headers=headers,
+            allowed_response_codes=allowed_response_codes
         )
 
         return result
