@@ -58,9 +58,12 @@ class EtherscanService:
 
         return result
 
-    async def get_logs(self, address, start_block):
+    async def get_logs(self, address, start_block, topic0 = None):
 
         url = f'{self.base_url}?module=logs&action=getLogs&address={address}&fromBlock={start_block}&toBlock=latest&apiKey={self.api_key}'
+        
+        if topic0:
+            url += f'&topic0={topic0}'
 
         def fn(data, text):
             trans = data["result"]
