@@ -17,9 +17,12 @@ class TransactionSyncService:
         self.etherscan_service = etherscan_service
         self.page_size = 1000
 
-    async def sync_transactions(self, contract_address, start_block_number=0):
+    async def sync_transactions(self, contract_address, start_block_number=0, etherscan_service=None, chain=None):
 
-        latest_block_number = await self.etherscan_service.get_latest_block_number()
+        if not etherscan_service:
+            etherscan_service = self.etherscan_service
+
+        latest_block_number = await etherscan_service.get_latest_block_number()
 
         latest_transaction = self.contract_transactions_repo.get_latest(
             contract_address
@@ -27,16 +30,16 @@ class TransactionSyncService:
 
         if latest_transaction is not None and len(latest_transaction):
             repo_latest_block_number = latest_transaction[0]["blockNumber"]
-            
+
             if repo_latest_block_number < start_block_number:
                 start_block_number = repo_latest_block_number
-            
+
             start_block_number = repo_latest_block_number
 
         original_start_block = start_block_number
 
         while True:
-            trans = await self.etherscan_service.get_transactions(contract_address, start_block_number, self.page_size)
+            trans = await etherscan_service.get_transactions(contract_address, start_block_number, self.page_size)
 
             if len(trans) == 0:
                 break
@@ -58,6 +61,7 @@ class TransactionSyncService:
                 tran["gasPrice"] = int(tran["gasPrice"])
                 tran["isError"] = tran["isError"] == "1"
                 tran["timeStamp"] = int(tran["timeStamp"])
+                tran["chain"] = chain
                 tran["transactionIndex"] = int(tran["transactionIndex"])
                 if len(tran["input"]) >= 10:
                     tran["methodId"] = tran["input"][0:10]
@@ -79,8 +83,19 @@ class TransactionSyncService:
             if (len(trans) < self.page_size):
                 break
 
-    async def sync_logs(self, log_address, start_block_number=0):
-        latest_block_number = await self.etherscan_service.get_latest_block_number()
+    async def sync_logs(
+        self,
+        log_address,
+        start_block_number=0,
+        etherscan_service=None,
+        chain=None,
+        topic0=None
+    ):
+
+        if not etherscan_service:
+            etherscan_service = self.etherscan_service
+
+        latest_block_number = await etherscan_service.get_latest_block_number()
 
         latest_log = self.contract_logs_repo.get_latest(
             log_address
@@ -94,7 +109,7 @@ class TransactionSyncService:
         original_start_block = start_block_number
 
         while True:
-            logs = await self.etherscan_service.get_logs(log_address, start_block_number)
+            logs = await etherscan_service.get_logs(log_address, start_block_number, topic0=topic0)
 
             if len(logs) == 0:
                 break
@@ -108,8 +123,8 @@ class TransactionSyncService:
                     start_block_number = block_number
 
                 log["blockNumber"] = block_number
-                log["gasUsed"] = literal_eval(log["gasUsed"])
-                log["gasPrice"] = literal_eval(log["gasPrice"])
+                log["gasUsed"] = 0 if log["gasUsed"] == "0x" else literal_eval(log["gasUsed"])
+                log["gasPrice"] = 0 if log["gasPrice"] == "0x" else literal_eval(log["gasPrice"])
                 log["timeStamp"] = literal_eval(log["timeStamp"])
 
                 if (log["logIndex"] == "0x"):
@@ -122,7 +137,7 @@ class TransactionSyncService:
                 else:
                     log["transactionIndex"] = literal_eval(
                         log["transactionIndex"])
-
+                log["chain"] = chain
                 models.append(log)
 
             self.contract_logs_repo.save(models)

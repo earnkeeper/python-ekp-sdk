@@ -16,6 +16,7 @@ class ContractTransactionsRepo:
         self.collection.create_index([("timeStamp", DESCENDING)])
         self.collection.create_index([("methodId", DESCENDING)])
         self.collection.create_index("source_contract_address")
+        self.collection.create_index("chain")
 
     def get_latest(self, contract_address):
         return list(
@@ -25,12 +26,21 @@ class ContractTransactionsRepo:
                 .sort("blockNumber", -1).limit(1)
         )
 
-    def find_since_block_number(self, block_number, limit, method_id=None):
+    def find_since_block_number(
+        self, 
+        block_number, 
+        limit, 
+        method_id=None,
+        source_contract_address=None        
+        ):
         start = time.perf_counter()
         query = {"blockNumber": {"$gte": block_number}}
         
         if method_id is not None:
             query["methodId"] = method_id
+            
+        if source_contract_address is not None:
+            query["source_contract_address"] = source_contract_address
             
         results = list(
             self.collection
