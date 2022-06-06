@@ -66,12 +66,13 @@ def Div(children=None, class_name=None, style=None, when=None, context=None):
     }
 
 
-def Col(class_name=None, children=None):
+def Col(class_name=None, children=None, when=None):
     return {
         "_type": "Col",
         "props": clean_null_terms({
             "className": class_name,
-            "children": children or []
+            "children": children or [],
+            "when": when
         })
     }
 
