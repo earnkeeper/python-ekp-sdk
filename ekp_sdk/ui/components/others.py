@@ -104,11 +104,14 @@ def Datatable(
     pagination_per_page=None,
     search_hint=None,
     show_export=None,
+    show_last_updated=None,
+    card=None
 ):
     return {
         "_type": "Datatable",
         "props": clean_null_terms({
             "busyWhen": busy_when,
+            "card": card,
             "className": class_name,
             "columns": columns,
             "data": data,
@@ -123,14 +126,17 @@ def Datatable(
             "paginationPerPage": pagination_per_page,
             "searchHint": search_hint,
             "showExport": show_export,
+            "showLastUpdated": show_last_updated,
         })
     }
 
 
-def Hr():
+def Hr(class_name=None):
     return {
         "_type": "Hr",
-        "props": {}
+        "props": {
+            "className": class_name
+        }
     }
 
 
