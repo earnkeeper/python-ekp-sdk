@@ -65,6 +65,29 @@ def Div(children=None, class_name=None, style=None, when=None, context=None):
         })
     }
 
+def Timeline(events=None, title=None, content=None, style=None, class_name = None):
+    return {
+        "_type": "Timeline",
+        "props": clean_null_terms({
+            "className": class_name,
+            "events": events or [],
+            "title": title,
+            "content": content,
+            "style": style,
+        })
+    }
+    
+def Ul(items=None, style=None, class_name=None):
+    return {
+        "_type": "Ul",
+        "props": clean_null_terms({
+            "className": class_name,
+            "style": style,
+            "items": items or [],
+        })
+    }
+    
+    
 
 def Col(class_name=None, children=None, when=None):
     return {
