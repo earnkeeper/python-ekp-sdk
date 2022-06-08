@@ -349,3 +349,22 @@ def Avatar(icon, size=None, color=None):
             "size": size
         })
     }
+
+def Alert(content, header=None, icon_name=None, class_name=None, style=None, when=None):
+    return {
+        "_type": "Alert",
+        "props": clean_null_terms({
+            "content": content,
+            "header": header,
+            "icon_name": icon_name,
+            "class_name": class_name,
+            "style": style,
+            "when": when,
+        })
+    }
+    
+Alert(
+    "Metabomb is currently under maintenance, preparing for their official launch today. This page may encounter errors.",
+    header="Attention",
+    icon_name="bell"
+)
