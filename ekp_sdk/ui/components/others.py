@@ -363,8 +363,3 @@ def Alert(content, header=None, icon_name=None, class_name=None, style=None, whe
         })
     }
     
-Alert(
-    "Metabomb is currently under maintenance, preparing for their official launch today. This page may encounter errors.",
-    header="Attention",
-    icon_name="bell"
-)
