@@ -356,8 +356,8 @@ def Alert(content, header=None, icon_name=None, class_name=None, style=None, whe
         "props": clean_null_terms({
             "content": content,
             "header": header,
-            "icon_name": icon_name,
-            "class_name": class_name,
+            "iconName": icon_name,
+            "className": class_name,
             "style": style,
             "when": when,
         })

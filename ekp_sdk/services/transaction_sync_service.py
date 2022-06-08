@@ -31,7 +31,7 @@ class TransactionSyncService:
         if latest_transaction is not None and len(latest_transaction):
             repo_latest_block_number = latest_transaction[0]["blockNumber"]
 
-            if repo_latest_block_number < start_block_number:
+            if repo_latest_block_number > start_block_number:
                 start_block_number = repo_latest_block_number
 
             start_block_number = repo_latest_block_number
@@ -103,7 +103,7 @@ class TransactionSyncService:
 
         if latest_log is not None and len(latest_log):
             repo_latest_block_number = latest_log[0]["blockNumber"]
-            if repo_latest_block_number < start_block_number:
+            if repo_latest_block_number > start_block_number:
                 start_block_number = repo_latest_block_number
 
         original_start_block = start_block_number
