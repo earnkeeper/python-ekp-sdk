@@ -3,7 +3,7 @@ from setuptools import find_packages, setup
 with open("README.md", "r", encoding="latin-1") as fh:
     long_description = fh.read()
 
-VERSION = '0.5.24'
+VERSION = '0.5.25'
 DESCRIPTION = 'Python SDK for frontend components usage'
 LONG_DESCRIPTION = 'A package that allows to use front-end components to simplify ' \
                    'building of web pages for ekp plugins'
