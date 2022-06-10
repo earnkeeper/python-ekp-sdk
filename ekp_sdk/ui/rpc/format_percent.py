@@ -1,5 +1,5 @@
-def format_percent(value):
+def format_percent(value, showPlus=False):
     return {
         "method": "formatPercent",
-        "params": [value]
+        "params": [value, showPlus]
     }
