@@ -17,7 +17,7 @@ class MoralisApiService:
 
     # -----------------------------------------------------------------
 
-    async def get_address_mtb_price(
+    async def get_address_token_price(
             self,
             chain: str,
             token_address: str,
