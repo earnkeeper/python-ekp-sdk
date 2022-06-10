@@ -17,6 +17,18 @@ class MoralisApiService:
 
     # -----------------------------------------------------------------
 
+    async def get_address_mtb_price(
+            self,
+            chain: str,
+            token_address: str,
+            address: str
+    ):
+        url = f"{self.base_url}/{address}/erc20?chain={chain}&token_addresses={token_address}"
+
+        result = await self.__get(url, fn=lambda data: data[0]["balance"])
+
+        return result
+
     async def get_token_usd_price(
         self,
         chain: str,
@@ -53,7 +65,7 @@ class MoralisApiService:
 
         url = f"{self.base_url}/erc20/metadata?chain={chain}&addresses={address}"
 
-        result = await self.__get(url, fn=lambda data,text: data[0])
+        result = await self.__get(url, fn=lambda data, text: data[0])
 
         return result
     # -----------------------------------------------------------------
