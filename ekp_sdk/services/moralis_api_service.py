@@ -25,7 +25,7 @@ class MoralisApiService:
     ):
         url = f"{self.base_url}/{address}/erc20?chain={chain}&token_addresses={token_address}"
 
-        result = await self.__get(url, fn=lambda data: data[0]["balance"])
+        result = await self.__get(url, fn=lambda data, text: data[0]["balance"])
 
         return result
 
