@@ -13,7 +13,7 @@ class RestClient:
     async def get(
         self,
         url,
-        fn=lambda data, text: data,
+        fn=lambda data, text, response: data,
         limiter: Limiter = None,
         headers=None,
         allowed_response_codes = [200]
@@ -38,7 +38,7 @@ class RestClient:
 
                 print(f"⏱  GET [{url}] {time.perf_counter() - start:0.3f}s")
 
-                return fn(data, text)
+                return fn(data, text, response)
         finally:
             if limiter is not None:
                 limiter.release()

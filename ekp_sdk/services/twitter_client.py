@@ -14,10 +14,15 @@ class TwitterClient:
         self.base_url = "https://api.twitter.com/1.1"
 
     async def get_user_info_by_screen_name(self, screen_name):
-        url = f"{self.base_url}/users/show.json?screen_name={screen_name}"
-        return await self.__get(url)
 
-    async def __get(self, url, fn=lambda data, text: data, allowed_response_codes=[200]):
+        def fn(data, text, response):
+            return None if response.status == 404 else data
+        
+        url = f"{self.base_url}/users/show.json?screen_name={screen_name}"
+        
+        return await self.__get(url, fn=fn, allowed_response_codes=[200,404])
+
+    async def __get(self, url, fn=lambda data: data, allowed_response_codes=[200]):
         headers = {"Authorization": f"Bearer {self.auth_token}"}
 
         result = await self.rest_client.get(
