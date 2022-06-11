@@ -16,11 +16,11 @@ class TwitterClient:
     async def get_user_info_by_screen_name(self, screen_name):
 
         def fn(data, text, response):
-            return None if response.status == 404 else data
+            return None if response.status in [404,403] else data
         
         url = f"{self.base_url}/users/show.json?screen_name={screen_name}"
         
-        return await self.__get(url, fn=fn, allowed_response_codes=[200,404])
+        return await self.__get(url, fn=fn, allowed_response_codes=[200,404, 403])
 
     async def __get(self, url, fn=lambda data: data, allowed_response_codes=[200]):
         headers = {"Authorization": f"Bearer {self.auth_token}"}
