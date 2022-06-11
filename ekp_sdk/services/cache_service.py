@@ -15,8 +15,6 @@ class CacheService:
         if (value is None or value == b"_None"):
             return None
         
-        print(value)
-        
         return json.loads(value)
 
     async def set(self, key, value, ex=None):
