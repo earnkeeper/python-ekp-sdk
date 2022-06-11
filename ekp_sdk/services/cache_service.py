@@ -12,15 +12,18 @@ class CacheService:
 
     async def get(self, key):
         value = await self.redis_client.get(key)
-        if (value is None):
+        if (value is None or value == b"_None"):
             return None
+        
+        print(value)
+        
         return json.loads(value)
 
     async def set(self, key, value, ex=None):
         if (value is not None):
             return await self.redis_client.set(key, json.dumps(value), ex=ex)
 
-        return await self.redis_client.set(key, value)
+        return await self.redis_client.set(key, "_None")
 
     async def wrap(self, key, fn, ex=None):
 
@@ -30,7 +33,7 @@ class CacheService:
             return cache_value
 
         value = await fn()
-
+        
         await self.set(key, value, ex=ex)
 
         return value
