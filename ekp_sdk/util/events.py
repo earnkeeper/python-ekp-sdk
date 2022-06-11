@@ -13,6 +13,7 @@ def client_currency(event):
 
     return event["state"]["client"]["selectedCurrency"]
 
+
 def client_path(event):
     if (event is None):
         return None
@@ -27,6 +28,7 @@ def client_path(event):
         return None
 
     return event["state"]["client"]["path"]
+
 
 def form_value(event, form_name, property_name):
     if (event is None):
@@ -46,6 +48,7 @@ def form_value(event, form_name, property_name):
 
     return event["state"]["forms"][form_name][property_name]
 
+
 def form_values(event, form_name):
     if (event is None):
         return None
@@ -61,3 +64,21 @@ def form_values(event, form_name):
 
     return event["state"]["forms"][form_name]
 
+
+def client_query_param(event, key):
+    if (event is None):
+        return None
+
+    if ("state" not in event.keys()):
+        return None
+
+    if ("client" not in event["state"].keys()):
+        return None
+
+    if ("queryParams" not in event["state"]["client"].keys()):
+        return None
+
+    if (key not in event["state"]["client"]["queryParams"].keys()):
+        return None
+
+    return event["state"]["client"]["queryParams"][key]
