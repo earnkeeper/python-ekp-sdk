@@ -84,3 +84,14 @@ class CoingeckoService:
         result = await self.rest_client.get(url, lambda data, text, response: data, limiter=self.limiter)
 
         return result
+
+    async def get_market_chart(self, coin_id, days, interval=None, vs_currency='usd'):
+
+        url = f"{self.base_url}/coins/{coin_id}/market_chart?vs_currency={vs_currency}&days={days}"
+        
+        if interval:
+            url += f"&interval={interval}"
+
+        result = await self.rest_client.get(url, lambda data, text, response: data, limiter=self.limiter)
+
+        return result
