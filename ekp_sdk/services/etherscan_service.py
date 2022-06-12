@@ -16,28 +16,28 @@ class EtherscanService:
 
     async def get_latest_block_number(self):
         url = f"{self.base_url}?module=proxy&action=eth_blockNumber&apikey={self.api_key}"
-        result = await self.rest_client.get(url, lambda data, text: literal_eval(data["result"]), self.limiter)
+        result = await self.rest_client.get(url, lambda data, text, response: literal_eval(data["result"]), self.limiter)
 
         return result
     
     async def get_block_number_by_timestamp(self, timestamp):
         url = f"{self.base_url}?module=block&action=getblocknobytime&closest=before&timestamp={timestamp}&apikey={self.api_key}"
         
-        result = await self.rest_client.get(url, lambda data, text: int(data["result"]), self.limiter)
+        result = await self.rest_client.get(url, lambda data, text, response: int(data["result"]), self.limiter)
 
         return result    
     
     async def get_contract_name(self, address):
         url = f"{self.base_url}?module=contract&action=getsourcecode&address={address}&apikey={self.api_key}"
 
-        result = await self.rest_client.get(url, lambda data, text: data["result"][0]["ContractName"], self.limiter)
+        result = await self.rest_client.get(url, lambda data, text, response: data["result"][0]["ContractName"], self.limiter)
 
         return result
 
     async def get_abi(self, address):
         url = f"{self.base_url}?module=contract&action=getabi&address={address}&apikey={self.api_key}"
 
-        result = await self.rest_client.get(url, lambda data, text: data["result"], self.limiter)
+        result = await self.rest_client.get(url, lambda data, text, response: data["result"], self.limiter)
 
         return result
 

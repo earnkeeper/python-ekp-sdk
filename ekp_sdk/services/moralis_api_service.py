@@ -25,7 +25,7 @@ class MoralisApiService:
     ):
         url = f"{self.base_url}/{address}/erc20?chain={chain}&token_addresses={token_address}"
 
-        result = await self.__get(url, fn=lambda data, text: data[0]["balance"] if data else 0)
+        result = await self.__get(url, fn=lambda data, text, response: data[0]["balance"] if data else 0)
 
         return result
 
@@ -65,7 +65,7 @@ class MoralisApiService:
 
         url = f"{self.base_url}/erc20/metadata?chain={chain}&addresses={address}"
 
-        result = await self.__get(url, fn=lambda data, text: data[0])
+        result = await self.__get(url, fn=lambda data, text, response: data[0])
 
         return result
     # -----------------------------------------------------------------
@@ -85,7 +85,7 @@ class MoralisApiService:
 
     # -----------------------------------------------------------------
 
-    async def __get(self, url, fn=lambda data, text: data["result"], allowed_response_codes = [200]):
+    async def __get(self, url, fn=lambda data, text, response: data["result"], allowed_response_codes = [200]):
         headers = {"X-API-Key": self.api_key}
 
         result = await self.rest_client.get(

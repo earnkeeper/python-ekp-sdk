@@ -22,7 +22,7 @@ class TwitterClient:
         
         return await self.__get(url, fn=fn, allowed_response_codes=[200,404, 403])
 
-    async def __get(self, url, fn=lambda data: data, allowed_response_codes=[200]):
+    async def __get(self, url, fn=lambda data, text, response: data, allowed_response_codes=[200]):
         headers = {"Authorization": f"Bearer {self.auth_token}"}
 
         result = await self.rest_client.get(
