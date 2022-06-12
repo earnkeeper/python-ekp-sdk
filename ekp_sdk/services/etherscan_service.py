@@ -45,7 +45,7 @@ class EtherscanService:
 
         url = f'{self.base_url}?module=account&action=txlist&address={address}&startblock={start_block}&page=1&offset={offset}&sort=asc&apiKey={self.api_key}'
 
-        def fn(data, text):
+        def fn(data, text, response):
             trans = data["result"]
             
             if (trans is None) or not (isinstance(trans, list)):
@@ -65,7 +65,7 @@ class EtherscanService:
         if topic0:
             url += f'&topic0={topic0}'
 
-        def fn(data, text):
+        def fn(data, text, response):
             trans = data["result"]
             
             if (trans is None or not isinstance(trans, list)):
