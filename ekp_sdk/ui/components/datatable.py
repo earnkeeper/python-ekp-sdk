@@ -18,7 +18,8 @@ def Datatable(
     search_hint=None,
     show_export=None,
     show_last_updated=None,
-    card=None
+    card=None,
+    row_height=None
 ):
     return {
         "_type": "Datatable",
@@ -40,5 +41,6 @@ def Datatable(
             "searchHint": search_hint,
             "showExport": show_export,
             "showLastUpdated": show_last_updated,
+            "rowHeight": row_height
         })
     }

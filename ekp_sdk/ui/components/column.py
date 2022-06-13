@@ -14,6 +14,7 @@ def Column(
     title=None,
     value=None,
     width=None,
+    compact=None
 ):
     return clean_null_terms({
         "cell": cell,
@@ -28,4 +29,5 @@ def Column(
         "title": title,
         "value": value,
         "width": width,
+        "compact": compact
     })
