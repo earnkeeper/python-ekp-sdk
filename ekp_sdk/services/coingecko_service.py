@@ -92,6 +92,9 @@ class CoingeckoService:
         if interval:
             url += f"&interval={interval}"
 
-        result = await self.rest_client.get(url, lambda data, text, response: data, limiter=self.limiter)
+        def fn(data, text, response):
+            return None if response.status in [404] else data
+
+        result = await self.rest_client.get(url, fn, allowed_response_codes=[200,404], limiter=self.limiter)
 
         return result
