@@ -40,21 +40,21 @@ class MoralisApiService:
 
         if to_block_number:
             url += f"&to_block={to_block_number}"
-        
-        def handle_response(data, text):
+
+        def handle_response(data, text, response):
             if "usdPrice" in data:
                 return data["usdPrice"]
-            
+
             return 0
-            
+
         result = await self.__get(
-            url, 
-            handle_response, 
-            allowed_response_codes = [200, 400]
+            url,
+            handle_response,
+            allowed_response_codes=[200, 400]
         )
 
         return result
-    
+
     # -----------------------------------------------------------------
 
     async def get_token_metadata(
@@ -85,7 +85,7 @@ class MoralisApiService:
 
     # -----------------------------------------------------------------
 
-    async def __get(self, url, fn=lambda data, text, response: data["result"], allowed_response_codes = [200]):
+    async def __get(self, url, fn=lambda data, text, response: data["result"], allowed_response_codes=[200]):
         headers = {"X-API-Key": self.api_key}
 
         result = await self.rest_client.get(

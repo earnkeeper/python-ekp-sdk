@@ -47,7 +47,7 @@ class RestClient:
         self,
         url,
         data,
-        fn=lambda data, text: data,
+        fn=lambda data, text, response: data,
         limiter: Limiter = None
     ):
         if limiter is not None:
@@ -69,7 +69,7 @@ class RestClient:
 
                 print(f"⏱  POST [{url}] {time.perf_counter() - start:0.3f}s")
 
-                return fn(data, text)
+                return fn(data, text, response)
         finally:
             if limiter is not None:
                 limiter.release()
