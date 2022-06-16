@@ -21,7 +21,11 @@ class BaseContainer:
 
         # -----------------------------------------------------------------
 
-        self.rest_client = RestClient()
+        PROXY_URI = config("PROXY_URI", default=None)
+        
+        self.rest_client = RestClient(
+            proxy_uri=PROXY_URI
+        )
 
         # -----------------------------------------------------------------
 
