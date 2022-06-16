@@ -11,7 +11,7 @@ class CoingeckoService:
     ):
         self.base_url = "https://api.coingecko.com/api/v3"
         self.rest_client = rest_client
-        self.limiter = Limiter(1000, 1)
+        self.limiter = Limiter(2000, 1)
 
     async def get_coin(self, id):
         url = f"{self.base_url}/coins/{id}"
