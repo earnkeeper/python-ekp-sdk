@@ -4,6 +4,7 @@ from ekp_sdk.util.clean_null_terms import clean_null_terms
 def Datatable(
     data,
     columns,
+    alert_config=None,
     busy_when=None,
     class_name=None,
     default_sort_asc=None,
@@ -24,6 +25,7 @@ def Datatable(
     return {
         "_type": "Datatable",
         "props": clean_null_terms({
+            "alertConfig": alert_config,
             "busyWhen": busy_when,
             "card": card,
             "className": class_name,
