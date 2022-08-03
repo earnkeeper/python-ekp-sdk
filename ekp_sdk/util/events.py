@@ -13,6 +13,21 @@ def client_currency(event):
 
     return event["state"]["client"]["selectedCurrency"]
 
+def client_is_subscribed(event):
+    if (event is None):
+        return False
+
+    if ("state" not in event.keys()):
+        return False
+
+    if ("client" not in event["state"].keys()):
+        return False
+
+    if ("subscribed" not in event["state"]["client"].keys()):
+        return False
+
+    return event["state"]["client"]["subscribed"]
+
 def client_path(event):
     if (event is None):
         return None
