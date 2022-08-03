@@ -11,18 +11,21 @@ class CoingeckoService:
     ):
         self.base_url = "https://api.coingecko.com/api/v3"
         self.rest_client = rest_client
-        self.limiter = Limiter(1000, 1)
-    
+        self.limiter = Limiter(2000, 1)
+
     async def get_coin(self, id):
         url = f"{self.base_url}/coins/{id}"
 
-        return await self.rest_client.get(url, limiter=self.limiter)
-        
+        def fn(data, text, response):
+            return None if response.status in [404] else data
+
+        return await self.rest_client.get(url, fn, allowed_response_codes=[200, 404], limiter=self.limiter)
+
     async def get_coins(self):
         url = f"{self.base_url}/coins/list?include_platform=true"
 
         return await self.rest_client.get(url, limiter=self.limiter)
-        
+
     async def get_coin_id_map(self, platform_id):
 
         url = f"{self.base_url}/coins/list?include_platform=true"
@@ -38,7 +41,7 @@ class CoingeckoService:
             map[coin["platforms"][platform_id]] = coin["id"]
 
         return map
-    
+
     async def get_coin_address_map(self, platform_id):
 
         url = f"{self.base_url}/coins/list?include_platform=true"
@@ -54,12 +57,12 @@ class CoingeckoService:
             map[coin["id"]] = coin["platforms"][platform_id]
 
         return map
-    
+
     async def get_historic_price(self, coin_id, date_str, fiat_id):
 
         url = f"{self.base_url}/coins/{coin_id}/history?date={date_str}"
 
-        result = await self.rest_client.get(url, lambda data, text: data['market_data']['current_price'][fiat_id], limiter=self.limiter)
+        result = await self.rest_client.get(url, lambda data, text, response: data['market_data']['current_price'][fiat_id], limiter=self.limiter)
 
         return result
 
@@ -67,17 +70,31 @@ class CoingeckoService:
 
         url = f"{self.base_url}/simple/price?ids={coin_id}&vs_currencies={fiat_id}"
 
-        result = await self.rest_client.get(url, lambda data, text: data[coin_id][fiat_id], limiter=self.limiter)
+        result = await self.rest_client.get(url, lambda data, text, response: data[coin_id][fiat_id], limiter=self.limiter)
 
         return result
 
-    async def get_coin_markets(self, page = 1, per_page = 50, vs_currency = "usd", category = None):
+    async def get_coin_markets(self, page=1, per_page=50, vs_currency="usd", category=None):
 
         url = f"{self.base_url}/coins/markets?vs_currency={vs_currency}&order=market_cap_desc&per_page={per_page}&page={page}&sparkline=false"
-        
+
         if category:
             url += f"&category={category}"
 
-        result = await self.rest_client.get(url, lambda data, text: data, limiter=self.limiter)
+        result = await self.rest_client.get(url, lambda data, text, response: data, limiter=self.limiter)
+
+        return result
+
+    async def get_market_chart(self, coin_id, days, interval=None, vs_currency='usd'):
+
+        url = f"{self.base_url}/coins/{coin_id}/market_chart?vs_currency={vs_currency}&days={days}"
+        
+        if interval:
+            url += f"&interval={interval}"
+
+        def fn(data, text, response):
+            return None if response.status in [404] else data
+
+        result = await self.rest_client.get(url, fn, allowed_response_codes=[200,404], limiter=self.limiter)
 
         return result

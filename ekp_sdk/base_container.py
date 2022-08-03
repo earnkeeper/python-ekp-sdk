@@ -11,6 +11,7 @@ from ekp_sdk.services.moralis_api_service import MoralisApiService
 from ekp_sdk.services.redis_client import RedisClient
 from ekp_sdk.services.rest_client import RestClient
 from ekp_sdk.services.transaction_sync_service import TransactionSyncService
+from ekp_sdk.services.twitter_client import TwitterClient
 from ekp_sdk.services.web3_service import Web3Service
 import logging
 
@@ -20,7 +21,11 @@ class BaseContainer:
 
         # -----------------------------------------------------------------
 
-        self.rest_client = RestClient()
+        PROXY_URI = config("PROXY_URI", default=None)
+        
+        self.rest_client = RestClient(
+            proxy_uri=PROXY_URI
+        )
 
         # -----------------------------------------------------------------
 
@@ -160,5 +165,17 @@ class BaseContainer:
             )
         else:
             logging.warn("⚠️ skipped GoogleSheetsClient init, missing GOOGLE_SHEETS_CREDENTIALS_FILE")
+            
+        # -----------------------------------------------------------------
+
+        TWITTER_AUTH_TOKEN = config("TWITTER_AUTH_TOKEN", default=None)
+
+        if TWITTER_AUTH_TOKEN is not None:
+            self.twitter_client = TwitterClient(
+                rest_client=self.rest_client,
+                auth_token=TWITTER_AUTH_TOKEN
+            )
+        else:
+            logging.warn("⚠️ skipped TwitterClient init, missing TWITTER_AUTH_TOKEN")
             
         # -----------------------------------------------------------------

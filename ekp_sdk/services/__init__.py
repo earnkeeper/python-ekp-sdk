@@ -10,3 +10,4 @@ from ekp_sdk.services.web3_service import Web3Service
 from ekp_sdk.services.base_mapper_service import BaseMapperService
 from ekp_sdk.services.moralis_api_service import MoralisApiService
 from ekp_sdk.services.google_sheets_client import GoogleSheetsClient
+from ekp_sdk.services.twitter_client import TwitterClient
